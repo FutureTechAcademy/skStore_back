@@ -1,22 +1,30 @@
 const express = require("express")
-const mongoose =require("mongoose")
+const mongoose = require("mongoose")
 const cors = require("cors")
 const router = require("./routers/productRouter")
 const app = express()
+const path = require("path")
+const fs = require("fs")
+
 
 
 //Middleware 
 app.use(express.json())
 app.use(cors())
-app.use("/uploads",express.static("uploads"))
-app.use("/api/product",router)
+app.use((req,res,next) => {
+    const uploadDir = path.join(__dirname, "/uploads")
+    if (!(fs.existsSync(uploadDir))) {
+        fs.mkdir(uploadDir)
+    }
+    next()
+})
+app.use("/uploads", express.static("uploads"))
+app.use("/api/product", router)
 
 mongoose.connect("mongodb+srv://admin:admin@app1.oy5gwwo.mongodb.net/app1?retryWrites=true&w=majority&appName=App1")
-.then(()=>
-{
-    app.listen(4000,()=>
-    {
-        console.log("Server Started Port Number "+4000)
+    .then(() => {
+        app.listen(4000, () => {
+            console.log("Server Started Port Number " + 4000)
+        })
     })
-})
-.catch(err=>console.log(err))
+    .catch(err => console.log(err))
