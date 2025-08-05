@@ -1,0 +1,5 @@
+get -> http://localhost:4000/api/product/        allData
+get ->  http://localhost:4000/api/product/4      id=4
+post -> http://localhost:4000/api/product/       {id,name,price,dis,img}
+delete -> http://localhost:4000/api/product/3    id=3
+put -> http://localhost:4000/api/product/        {id,name,price,dis,img}    
