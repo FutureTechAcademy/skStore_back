@@ -11,13 +11,21 @@ const fs = require("fs")
 //Middleware 
 app.use(express.json())
 app.use(cors())
-app.use((req,res,next) => {
-    const uploadDir = path.join(__dirname, "/uploads")
-    if (!(fs.existsSync(uploadDir))) {
-        fs.mkdir(uploadDir)
+
+
+const uploadDir = path.join(__dirname, "uploads")
+
+if (!fs.existsSync(uploadDir)) {
+    try {
+        fs.mkdirSync(uploadDir)
+        console.log("Uploads directory created at startup")
+    } catch (err) {
+        console.error("Failed to create uploads directory at startup", err)
+        process.exit(1) 
     }
-    next()
-})
+}
+
+
 app.use("/uploads", express.static("uploads"))
 app.use("/api/product", router)
 
